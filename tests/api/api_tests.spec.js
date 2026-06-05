@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test.js'
 
 
-test.only('chained: request', async({ apiContext}) => {
+test('chained: request', async({ apiContext}) => {
     // Get the list
     const listRes = await apiContext.get('/posts')
     const list = await listRes.json()

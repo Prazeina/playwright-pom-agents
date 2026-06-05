@@ -7,13 +7,13 @@ test.describe('SauceDemo checkout flow', () => {
 
   test('add a single item updates cart badge', async ({ inventoryPage }) => {
     await inventoryPage.addItemToCart('Sauce Labs Backpack');
-    expect(await inventoryPage.getCartCount()).toBe(1);
+    await expect(inventoryPage.cartBadge).toHaveText('1');
   });
 
   test('add multiple items and verify cart contents', async ({ inventoryPage, cartPage }) => {
     await inventoryPage.addItemToCart('Sauce Labs Backpack');
     await inventoryPage.addItemToCart('Sauce Labs Bike Light');
-    expect(await inventoryPage.getCartCount()).toBe(2);
+    await expect(inventoryPage.cartBadge).toHaveText('2');
 
     await inventoryPage.openCart();
     await cartPage.expectLoaded();

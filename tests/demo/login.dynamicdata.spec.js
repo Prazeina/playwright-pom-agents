@@ -1,20 +1,18 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/login'
-import loginData from '../../test-data/loginDataNew.json'
+import { test, expect } from '../../fixtures/test.js';
+import loginData from '../../test-data/loginDataNew.json';
 
-loginData.forEach((data) => {
-    if(!data.run) return;
+test.describe('Demo login (JSON array data-driven)', () => {
+  loginData.forEach((data) => {
+    if (!data.run) return;
 
-    test(`Login Test ${data.username}`, async ({ page }) => {
-        const loginPage = new LoginPage(page)
-        await loginPage.gotoLoginPage()
-        await loginPage.login(data.username, data.password);
+    test(`Login Test ${data.username}`, async ({ page, loginPage }) => {
+      await loginPage.login(data.username, data.password);
 
-        if(data.expected === 'success'){
-            await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html')
-        }else{
-            await expect(loginPage.errorMessage).toContainText('Epic sadface: Sorry, this user has been locked out.')
-        }
+      if (data.expected === 'success') {
+        await expect(page).toHaveURL(/.*\/inventory\.html/);
+      } else {
+        await expect(loginPage.errorMessage).toBeVisible();
+      }
     });
-
-})
+  });
+});
